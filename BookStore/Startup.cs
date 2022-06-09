@@ -30,11 +30,11 @@ namespace BookStore
         {
             services.AddDbContext<BookstoreDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString(""));
+                options.UseSqlServer(Configuration.GetConnectionString("AppConnection"));
             });
 
             services.AddControllersWithViews();
-            services.AddSingleton(typeof(BookRepository));
+            services.AddScoped(typeof(BookRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

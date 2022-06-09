@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Data
 {
-    public class Books
+    public class Book
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -18,5 +18,8 @@ namespace BookStore.Data
         public string Language { get; set; }
 
         public int? TotalPages { get; set; }
+
+        public DateTime? CreateOn { get; set; }
+        public DateTime? UpdateOn { get; set; }
     }
 }

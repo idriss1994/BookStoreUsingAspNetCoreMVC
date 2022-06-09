@@ -14,33 +14,44 @@ namespace BookStore.Controllers
 
         public BookController(BookRepository bookRepository)
         {
-            this._bookRepository = new BookRepository();
-        }
-        public IActionResult GetAllBooks()
+            _bookRepository = bookRepository;
+        } 
+        public async Task<IActionResult> GetAllBooks()
         {
-            var bookList = _bookRepository.GetAllBooks();
+            List<BookModel> bookList = await _bookRepository.GetAllBooks();
             return View(bookList);
         }
 
         [Route("book-details/{id}", Name = "bookDetailsRoute")]
-        public IActionResult GetBook(int id)
+        public async Task<IActionResult> GetBook(int id)
         {
-            var book = _bookRepository.GetBookById(id);
-
+            BookModel book = await _bookRepository.GetBookById(id);
+            if (book == null)
+            {
+                return NotFound(book);
+            }
             return View(book);
         }
 
-        public IActionResult AddNewBook()
+        [HttpGet]
+        public IActionResult AddNewBook(int id = 0, bool isSuccess = false)
         {
-            //Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper
+            ViewBag.BookId = id;
+            ViewBag.IsSuccess = isSuccess;
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddNewBook(BookModel model)
+        public async Task<IActionResult> AddNewBook(BookModel model)
         {
-            
-            return View(model);
+            int bookId = await _bookRepository.Add(model);
+            if (bookId > 0)
+            {
+                return RedirectToAction(nameof(AddNewBook),
+                    new { IsSuccess = true, Id = bookId});
+            }
+
+            return View();
         }
     }
 }
