@@ -53,6 +53,9 @@ namespace BookStore.Controllers
                         new { IsSuccess = true, Id = bookId });
                 } 
             }
+            ViewBag.ModelNotValid = true;
+            ModelState.AddModelError("", "This my custome error msg1");
+            ModelState.AddModelError("", "This my custome error msg2");
             return View();
         }
     }
