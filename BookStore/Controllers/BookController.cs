@@ -1,6 +1,7 @@
 ﻿using BookStore.Models;
 using BookStore.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace BookStore.Controllers
         public BookController(BookRepository bookRepository)
         {
             _bookRepository = bookRepository;
-        } 
+        }
         public async Task<IActionResult> GetAllBooks()
         {
             List<BookModel> bookList = await _bookRepository.GetAllBooks();
@@ -38,6 +39,7 @@ namespace BookStore.Controllers
         {
             ViewBag.BookId = id;
             ViewBag.IsSuccess = isSuccess;
+            ViewBag.Languages = GetLanguages();
             return View();
         }
 
@@ -51,12 +53,17 @@ namespace BookStore.Controllers
                 {
                     return RedirectToAction(nameof(AddNewBook),
                         new { IsSuccess = true, Id = bookId });
-                } 
+                }
             }
             ViewBag.ModelNotValid = true;
             ModelState.AddModelError("", "This my custome error msg1");
             ModelState.AddModelError("", "This my custome error msg2");
+            ViewBag.Languages = GetLanguages();
             return View();
+        }
+        private SelectList GetLanguages()
+        {
+            return new SelectList(new List<string> { "Arabic", "English", "French" });
         }
     }
 }
