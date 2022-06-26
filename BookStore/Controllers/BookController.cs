@@ -82,14 +82,18 @@ namespace BookStore.Controllers
          }
         private List<SelectListItem> GetLanguagesUsingSelectListItem()
         {
+            //Create groups for SelectListItem instances:
+            var group1 = new SelectListGroup { Name = "Group1" };
+            var group2 = new SelectListGroup { Name = "Group2" };
+            var group3 = new SelectListGroup { Name = "Group3", Disabled = true };
             return new List<SelectListItem>
             {
-                new SelectListItem { Text = "Arabic", Value = "1" },
-                new SelectListItem { Text = "English", Value = "2" },
-                new SelectListItem { Text = "Amazigh", Value = "3" },
-                new SelectListItem { Text = "French", Value = "4" },
-                new SelectListItem { Text = "Hindi", Value = "5" },
-                new SelectListItem { Text = "Dutch", Value = "6" },
+                new SelectListItem { Text = "Arabic", Value = "1", Group = group1 },
+                new SelectListItem { Text = "English", Value = "2", Group = group2 },
+                new SelectListItem { Text = "Amazigh", Value = "3", Group = group1 },
+                new SelectListItem { Text = "French", Value = "4" , Group = group2},
+                new SelectListItem { Text = "Hindi", Value = "5", Group = group3 },
+                new SelectListItem { Text = "Dutch", Value = "6", Group = group3 },
             };
         }
     }
