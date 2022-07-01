@@ -23,7 +23,7 @@ namespace BookStore.Models
         public string Category { get; set; }
       
         [Required(ErrorMessage = "Please select the  language of your book")]
-        public string Language { get; set; }
+        public int LanguageId { get; set; }
 
         [Required(ErrorMessage = "Please select the  language of your book")]
         public LanguageEnum Languages { get; set; }
