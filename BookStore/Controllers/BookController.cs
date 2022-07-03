@@ -52,7 +52,7 @@ namespace BookStore.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel model)
-        {
+            {
             if (ModelState.IsValid)
             {
                 int bookId = await _bookRepository.AddAsync(model);
@@ -63,8 +63,6 @@ namespace BookStore.Controllers
                 }
             }
             ViewBag.ModelNotValid = true;
-            ModelState.AddModelError("", "This my custome error msg1");
-            ModelState.AddModelError("", "This my custome error msg2");
             ViewBag.Languages = new SelectList(await _languageRepository.GetLanguagesAsync(), "Id", "Name");
             return View();
         }

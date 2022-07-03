@@ -38,46 +38,43 @@ namespace BookStore.Repository
         }
         public async Task<List<BookModel>> GetAllBooksAsync()
         {
-            List<Book> books = await _context.Books.ToListAsync();
+            DbSet<Book> books =  _context.Books;
             var allBooksModel = new List<BookModel>();
             //var value = books?.Any(); // can be true, false or null
 
             if (books?.Any() == true)
             {
-                foreach (var book in books)
+
+                allBooksModel = books.Select(book => new BookModel
                 {
-                    allBooksModel.Add(new BookModel
-                    {
-                        Id = book.Id,
-                        Title = book.Title,
-                        Author = book.Author,
-                        Description = book.Description,
-                        TotalPages = book.TotalPages,
-                        LanguageId = book.LanguageId,
-                        Category = book.Category
-                    });
-                }
+                    Id = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Description = book.Description,
+                    TotalPages = book.TotalPages,
+                    LanguageId = book.LanguageId,
+                    Language = book.Language.Name,
+                    Category = book.Category
+                }).ToList();
             }
             return allBooksModel;
         }
 
         public async Task<BookModel> GetBookByIdAsync(int id)
         {
-            Book book = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
-            if (book != null)
-            {
-                return new BookModel
+            return await _context.Books
+                .Where(b => b.Id == id)
+                .Select(book => new BookModel
                 {
                     Id = book.Id,
                     Title = book.Title,
-                    Description = book.Description,
-                    TotalPages = book.TotalPages,
                     Author = book.Author,
+                    LanguageId = book.LanguageId,
+                    Language = book.Language.Name,
+                    Description = book.Description,
                     Category = book.Category,
-                    LanguageId = book.LanguageId
-                };
-            }
-            return null;
+                    TotalPages = book.TotalPages
+                }).FirstOrDefaultAsync();
         }
     }
 }
