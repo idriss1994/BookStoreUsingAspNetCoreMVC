@@ -1,9 +1,11 @@
 ﻿using BookStore.Models;
 using BookStore.Repository;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,11 +15,15 @@ namespace BookStore.Controllers
     {
         private readonly BookRepository _bookRepository = null;
         private readonly LanguageRepository _languageRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BookController(BookRepository bookRepository, LanguageRepository languageRepository)
+        public BookController(BookRepository bookRepository,
+            LanguageRepository languageRepository,
+            IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
             _languageRepository = languageRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> GetAllBooks()
         {
@@ -52,9 +58,16 @@ namespace BookStore.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddNewBook(BookModel model)
-            {
+        {
             if (ModelState.IsValid)
             {
+                if (model.CoverPhoto != null)
+                {
+                    //Save the cover book in the server:
+                    string uniqueFileName = Guid.NewGuid() + "_" + model.CoverPhoto.FileName;
+                    string fullPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "book", uniqueFileName);
+                    await model.CoverPhoto.CopyToAsync(new FileStream(fullPath, FileMode.Create));
+                }
                 int bookId = await _bookRepository.AddAsync(model);
                 if (bookId > 0)
                 {
@@ -66,7 +79,7 @@ namespace BookStore.Controllers
             ViewBag.Languages = new SelectList(await _languageRepository.GetLanguagesAsync(), "Id", "Name");
             return View();
         }
-        
+
         private List<SelectListItem> GetLanguagesUsingSelectListItem()
         {
             //Create groups for SelectListItem instances:

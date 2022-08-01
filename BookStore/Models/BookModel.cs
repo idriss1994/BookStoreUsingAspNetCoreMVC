@@ -1,5 +1,6 @@
 ﻿using BookStore.Enums;
 using BookStore.Helpers;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,9 +13,9 @@ namespace BookStore.Models
     {
         public int Id { get; set; }
 
-        //[StringLength(100, MinimumLength = 5)]
-        //[Required(ErrorMessage = "Please enter the title of your book")]
-        [MyCustomValidation(text: "text")]
+        [StringLength(100, MinimumLength = 5)]
+        [Required(ErrorMessage = "Please enter the title of your book")]
+        //[MyCustomValidation(text: "text")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Please enter the author name")]
@@ -32,5 +33,9 @@ namespace BookStore.Models
         [Required(ErrorMessage = "Please enter the total pages")]
         [Display(Name = "Total pages of book")]
         public int? TotalPages { get; set; }
+
+        [Required]
+        [Display(Name = "Choose de cover photo of your book")]
+        public IFormFile CoverPhoto { get; set; }
     }
 }

@@ -32,7 +32,13 @@ namespace BookStore
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AppConnLocalDb"));
             });
-
+#if DEBUG
+            //Uncoment this code to disabled client side validation.
+            //services.AddRazorPages().AddViewOptions(options =>
+            //{
+            //    options.HtmlHelperOptions.ClientValidationEnabled = false;
+            //});
+#endif
             services.AddControllersWithViews();
             services.AddScoped(typeof(BookRepository));
             services.AddScoped<LanguageRepository, LanguageRepository>();

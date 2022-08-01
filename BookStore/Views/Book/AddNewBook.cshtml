@@ -21,11 +21,12 @@
         </div>
     }
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
+
         @if (ViewBag.ModelNotValid == true)
         {
             <div asp-validation-summary="All"
-                 class="alert alert-danger" role="alert"></div>
+             class="alert alert-danger" role="alert"></div>
         }
 
         <div class="form-group">
@@ -56,7 +57,29 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <label asp-for="CoverPhoto" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="CoverPhoto" class="custom-file-input" id="customFile" style="border:1px solid green"/>
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <button type="submit" class="btn btn-primary">Add book</button>
         </div>
     </form>
 </div>
+
+
+@section scripts {
+    <script>
+        function myComplete(data) {
+            alert("I am from my complete");
+            console.log("This the data ", data);
+        }
+        function mySuccess(data) {
+            alert("I am from my success");
+            console.log(data);
+        }
+    </script>
+}
