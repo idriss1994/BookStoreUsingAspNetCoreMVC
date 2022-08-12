@@ -35,7 +35,18 @@ namespace BookStore.Models
         public int? TotalPages { get; set; }
 
         [Required]
-        [Display(Name = "Choose de cover photo of your book")]
+        [Display(Name = "Choose the cover photo of your book")]
         public IFormFile CoverPhoto { get; set; }
+        public string CoverBookUrl { get; set; }
+
+        [Required]
+        [Display(Name = "Choose the gallery images of your book")]
+        public IFormFileCollection GalleryFiles { get; set; }
+        public List<GalleryModel> Gallery { get; set; }
+
+        [Required]
+        [Display(Name = "Upload your book in pdf format")]
+        public IFormFile BookPdf { get; set; }
+        public string BookPdfUrl { get; set; }
     }
 }

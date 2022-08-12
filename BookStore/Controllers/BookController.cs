@@ -1,6 +1,7 @@
 ﻿using BookStore.Models;
 using BookStore.Repository;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -64,9 +65,30 @@ namespace BookStore.Controllers
                 if (model.CoverPhoto != null)
                 {
                     //Save the cover book in the server:
-                    string uniqueFileName = Guid.NewGuid() + "_" + model.CoverPhoto.FileName;
-                    string fullPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "book", uniqueFileName);
-                    await model.CoverPhoto.CopyToAsync(new FileStream(fullPath, FileMode.Create));
+                    string folderPath = Path.Combine("images", "book");
+                    model.CoverBookUrl = await UploadFile(folderPath, model.CoverPhoto);
+                }
+                if (model.GalleryFiles != null)
+                {
+                    //Save the gallery images of the book in the server:
+                    string folderPath = Path.Combine("images", "gallery");
+                    model.Gallery = new List<GalleryModel>();
+
+                    foreach (IFormFile file in model.GalleryFiles)
+                    {
+                        var galleryModel = new GalleryModel
+                        {
+                            Name = file.FileName,
+                            URL = await UploadFile(folderPath, file)
+                        };
+                        model.Gallery.Add(galleryModel);
+                    }
+                }
+                if (model.BookPdf != null)
+                {
+                    //Save the  book in pdf format in the server:
+                    string folderPath = Path.Combine("books", "pdf");
+                    model.BookPdfUrl = await UploadFile(folderPath, model.BookPdf);
                 }
                 int bookId = await _bookRepository.AddAsync(model);
                 if (bookId > 0)
@@ -75,9 +97,17 @@ namespace BookStore.Controllers
                         new { IsSuccess = true, Id = bookId });
                 }
             }
-            ViewBag.ModelNotValid = true;
-            ViewBag.Languages = new SelectList(await _languageRepository.GetLanguagesAsync(), "Id", "Name");
             return View();
+        }
+
+        private async Task<string> UploadFile(string folderPath, IFormFile file)
+        {
+            string uniqueFileName = Guid.NewGuid() + "_" + file.FileName;
+            string fileUrl = Path.Combine(folderPath, uniqueFileName);
+            string fullPath = Path.Combine(_webHostEnvironment.WebRootPath, fileUrl);
+            await file.CopyToAsync(new FileStream(fullPath, FileMode.Create));
+
+            return fileUrl;
         }
 
         private List<SelectListItem> GetLanguagesUsingSelectListItem()

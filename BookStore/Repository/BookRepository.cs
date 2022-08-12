@@ -29,8 +29,21 @@ namespace BookStore.Repository
                 CreateOn = DateTime.UtcNow,
                 TotalPages = bookModel.TotalPages,
                 UpdateOn = DateTime.UtcNow,
-                LanguageId = bookModel.LanguageId
+                LanguageId = bookModel.LanguageId,
+                CoverBookUrl = bookModel.CoverBookUrl,
+                BookPdfUrl = bookModel.BookPdfUrl
             };
+
+            book.BookGallery = new List<BookGallery>();
+            foreach (var file in bookModel.Gallery)
+            {
+                book.BookGallery.Add(new BookGallery
+                {
+                    Name = file.Name,
+                    URL = file.URL,
+                });
+            }
+
             await _context.Books.AddAsync(book);
             await SaveAsync();
 
@@ -45,7 +58,7 @@ namespace BookStore.Repository
             if (books?.Any() == true)
             {
 
-                allBooksModel = books.Select(book => new BookModel
+                allBooksModel = await books.Select(book => new BookModel
                 {
                     Id = book.Id,
                     Title = book.Title,
@@ -54,8 +67,9 @@ namespace BookStore.Repository
                     TotalPages = book.TotalPages,
                     LanguageId = book.LanguageId,
                     Language = book.Language.Name,
-                    Category = book.Category
-                }).ToList();
+                    Category = book.Category,
+                    CoverBookUrl = book.CoverBookUrl
+                }).ToListAsync();
             }
             return allBooksModel;
         }
@@ -73,7 +87,15 @@ namespace BookStore.Repository
                     Language = book.Language.Name,
                     Description = book.Description,
                     Category = book.Category,
-                    TotalPages = book.TotalPages
+                    TotalPages = book.TotalPages,
+                    CoverBookUrl = book.CoverBookUrl,
+                    Gallery = book.BookGallery.Select(gallery => new GalleryModel
+                    {
+                        Id = gallery.Id,
+                        Name = gallery.Name,
+                        URL = gallery.URL
+                    }).ToList(),
+                    BookPdfUrl = book.BookPdfUrl
                 }).FirstOrDefaultAsync();
         }
     }
