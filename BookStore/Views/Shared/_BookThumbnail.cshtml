@@ -1,0 +1,17 @@
+﻿@model BookModel
+
+<div class="card mb-4 shadow-sm">
+    <img src="@(string.IsNullOrWhiteSpace(Model.CoverBookUrl) ? "~/images/noimage.png" : $"~/{Model.CoverBookUrl}")"
+         class="img-thumbnail" asp-append-version="true"/>
+    <div class="card-body">
+        <h3 class="card-title">@(string.IsNullOrWhiteSpace(Model.Title) ? "The title is not avialable" : Model.Title)</h3>
+        <p class="card-text">@(string.IsNullOrWhiteSpace(Model.Description) ? "The description is not avialable" : Model.Description)</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+                <a asp-route="bookDetailsRoute" asp-route-id="@Model.Id"
+                   class="btn btn-sm btn-outline-secondary">View details</a>
+            </div>
+            <small class="text-muted">@(string.IsNullOrWhiteSpace(Model.Author) ? "The author name is not avialble" : Model.Author)</small>
+        </div>
+    </div>
+</div>
