@@ -17,8 +17,9 @@
 <div class="py-5 bg-light">
     <div class="container">
         <h3 class="h3">Top books</h3>
-       
-        <vc:top-books/>
-       
+
+        <vc:top-books count="3" />
+        @*@await Component.InvokeAsync("TopBooks", new { count = 3 })*@
+
     </div>
 </div>

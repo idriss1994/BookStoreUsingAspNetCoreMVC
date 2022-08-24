@@ -73,7 +73,7 @@ namespace BookStore.Repository
             }
             return allBooksModel;
         }
-        public async Task<List<BookModel>> GetTopBooksAsync()
+        public async Task<List<BookModel>> GetTopBooksAsync(int count)
         {
             DbSet<Book> books = _context.Books;
             var topBooksModel = new List<BookModel>();
@@ -93,7 +93,7 @@ namespace BookStore.Repository
                     Language = book.Language.Name,
                     Category = book.Category,
                     CoverBookUrl = book.CoverBookUrl
-                }).Take(4).ToListAsync();
+                }).Take(count).ToListAsync();
             }
             return topBooksModel;
         }
