@@ -7,6 +7,7 @@ using System.Dynamic;
 
 namespace BookStore.Controllers
 {
+    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         [ViewData]
@@ -20,11 +21,12 @@ namespace BookStore.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult About(int age, string name)
         {
             return View();
         }
-
+        //[Route("contact-us/{id}")]
+        [HttpGet("~/contact-us")]
         public IActionResult ContactUs()
         {
             return View();
