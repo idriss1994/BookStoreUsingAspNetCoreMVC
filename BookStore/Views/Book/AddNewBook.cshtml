@@ -1,5 +1,6 @@
 ﻿@using BookStore.Enums
-
+@using BookStore.Repository
+@inject ILanguageRepository _languageRepo
 @model BookModel
 
 @{
@@ -41,7 +42,9 @@
         </div>
         <div class="form-group">
             <label asp-for="LanguageId"></label>
-            <select asp-for="LanguageId" class="form-control" asp-items="ViewBag.Languages">
+            <select asp-for="LanguageId" class="form-control"
+                    asp-items="(await _languageRepo.GetLanguagesAsync())
+                                                   .Select(l => new SelectListItem { Text = l.Name, Value = l.Id.ToString()})">
                 <option value="">Select the language of your  book</option>
             </select>
             <span asp-validation-for="LanguageId" class="text-danger"></span>

@@ -16,7 +16,6 @@ namespace BookStore.Controllers
     public class BookController : Controller
     {
         private readonly IBookRepository _bookRepository = null;
-        private readonly ILanguageRepository _languageRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public BookController(IBookRepository bookRepository,
@@ -24,7 +23,6 @@ namespace BookStore.Controllers
             IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
-            _languageRepository = languageRepository;
             _webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> GetAllBooks()
@@ -47,15 +45,14 @@ namespace BookStore.Controllers
         [HttpGet]
         public async Task<IActionResult> AddNewBook(int id = 0, bool isSuccess = false)
         {
-            var model = new BookModel
-            {
-                LanguageId = 2 // binding the value attribute of option tag in select tag.
-            };
+            //var model = new BookModel
+            //{
+            //    LanguageId = 2 // binding the value attribute of option tag in select tag.
+            //};
             ViewBag.BookId = id;
             ViewBag.IsSuccess = isSuccess;
-            var listOfLanguages = await _languageRepository.GetLanguagesAsync();
-            ViewBag.Languages = new SelectList(await _languageRepository.GetLanguagesAsync(), "Id", "Name");
-            return View(model);
+
+            return View();
         }
 
         [HttpPost]
@@ -98,7 +95,7 @@ namespace BookStore.Controllers
                         new { IsSuccess = true, Id = bookId });
                 }
             }
-            return View();
+            return View(model);
         }
 
         private async Task<string> UploadFile(string folderPath, IFormFile file)
