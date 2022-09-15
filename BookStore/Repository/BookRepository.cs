@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Repository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly BookstoreDbContext _context;
         public BookRepository(BookstoreDbContext context)
@@ -51,7 +51,7 @@ namespace BookStore.Repository
         }
         public async Task<List<BookModel>> GetAllBooksAsync()
         {
-            DbSet<Book> books =  _context.Books;
+            DbSet<Book> books = _context.Books;
             var allBooksModel = new List<BookModel>();
             //var value = books?.Any(); // can be true, false or null
 

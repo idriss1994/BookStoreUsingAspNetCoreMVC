@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Repository
 {
-    public class LanguageRepository
+    public class LanguageRepository : ILanguageRepository
     {
         private readonly BookstoreDbContext _dbContext;
 

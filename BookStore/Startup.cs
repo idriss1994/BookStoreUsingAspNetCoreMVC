@@ -40,8 +40,8 @@ namespace BookStore
             //});
 #endif
             services.AddControllersWithViews();
-            services.AddScoped(typeof(BookRepository));
-            services.AddScoped<LanguageRepository, LanguageRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
