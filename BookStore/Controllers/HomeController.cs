@@ -15,6 +15,9 @@ namespace BookStore.Controllers
 
         [ViewData]
         public string Title { get; set; } = "Home from HomeController";
+
+        // ~ : to override the controller route lavel
+        [Route("~/", Name = "Default route")]
         public IActionResult Index()
         {
             CustomProperty = "Value from ViewData attribue";

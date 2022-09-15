@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Controllers
 {
+    [Route("[controller]/[action]")]
     public class BookController : Controller
     {
         private readonly BookRepository _bookRepository = null;
@@ -32,7 +33,7 @@ namespace BookStore.Controllers
             return View(bookList);
         }
 
-        [Route("book-details/{id}", Name = "bookDetailsRoute")]
+        [Route("book-details/{id:int:min(1)}", Name = "bookDetailsRoute")]
         public async Task<IActionResult> GetBook(int id)
         {
             BookModel book = await _bookRepository.GetBookByIdAsync(id);
