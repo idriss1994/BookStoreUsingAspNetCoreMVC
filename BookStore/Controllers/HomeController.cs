@@ -4,12 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Dynamic;
+using Microsoft.Extensions.Configuration;
 
 namespace BookStore.Controllers
 {
     [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
+        private readonly IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         [ViewData]
         public string CustomProperty { get; set; }
 
@@ -21,6 +29,10 @@ namespace BookStore.Controllers
         public IActionResult Index()
         {
             CustomProperty = "Value from ViewData attribue";
+            var result = _configuration["AppName"];
+            var key1 = _configuration["InfoObj:Key1"];
+            var key2 = _configuration["InfoObj:key2"];
+            var key3 = _configuration["InfoObj:Key3:Key3Obj"];
             return View();
         }
 
