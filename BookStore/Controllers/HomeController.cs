@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using System.Dynamic;
 using Microsoft.Extensions.Configuration;
 using BookStore.Models;
+using Microsoft.Extensions.Options;
 
 namespace BookStore.Controllers
 {
     [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
-        private readonly IConfiguration _configuration;
+        private readonly IOptions<NewBookAlertConfig> _options;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(IOptions<NewBookAlertConfig> options)
         {
-            _configuration = configuration;
+            _options = options;
         }
 
         [ViewData]
@@ -30,8 +31,9 @@ namespace BookStore.Controllers
         public IActionResult Index()
         {
             CustomProperty = "Value from ViewData attribue";
-            var newBookAlertConfig = new NewBookAlertConfig();
-            _configuration.Bind("NewBookAlert", newBookAlertConfig);
+
+            NewBookAlertConfig newBookAlertConfig = _options.Value;
+
             return View();
         }
 
