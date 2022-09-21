@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Dynamic;
 using Microsoft.Extensions.Configuration;
+using BookStore.Models;
 
 namespace BookStore.Controllers
 {
@@ -29,12 +30,8 @@ namespace BookStore.Controllers
         public IActionResult Index()
         {
             CustomProperty = "Value from ViewData attribue";
-            var result = _configuration["AppName"];
-            var section = _configuration.GetSection("InfoObj");
-            var key11 = section.GetValue<string>("key1");
-            var key1 = _configuration["InfoObj:Key1"];
-            var key2 = _configuration["InfoObj:key2"];
-            var key3 = _configuration["InfoObj:Key3:Key3Obj"];
+            var newBookAlertConfig = new NewBookAlertConfig();
+            _configuration.Bind("NewBookAlert", newBookAlertConfig);
             return View();
         }
 
