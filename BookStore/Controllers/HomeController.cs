@@ -30,6 +30,8 @@ namespace BookStore.Controllers
         {
             CustomProperty = "Value from ViewData attribue";
             var result = _configuration["AppName"];
+            var section = _configuration.GetSection("InfoObj");
+            var key11 = section.GetValue<string>("key1");
             var key1 = _configuration["InfoObj:Key1"];
             var key2 = _configuration["InfoObj:key2"];
             var key3 = _configuration["InfoObj:Key3:Key3Obj"];
