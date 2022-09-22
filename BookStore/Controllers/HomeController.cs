@@ -13,9 +13,9 @@ namespace BookStore.Controllers
     [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
-        private readonly IOptions<NewBookAlertConfig> _options;
+        private readonly IOptionsSnapshot<NewBookAlertConfig> _options;
 
-        public HomeController(IOptions<NewBookAlertConfig> options)
+        public HomeController(IOptionsSnapshot<NewBookAlertConfig> options)
         {
             _options = options;
         }
