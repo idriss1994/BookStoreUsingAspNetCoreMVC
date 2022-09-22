@@ -45,7 +45,8 @@ namespace BookStore
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddSingleton<IMessageRepository, MessageRepository>();
 
-            services.Configure<NewBookAlertConfig>(Configuration.GetSection("NewBookAlert"));
+            services.Configure<NewBookAlertConfig>("NewBookAlert", Configuration.GetSection("NewBookAlert"));
+            services.Configure<NewBookAlertConfig>("ThirdPartyBookAlert", Configuration.GetSection("ThirdPartyBookAlert"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +58,7 @@ namespace BookStore
             }
 
             app.UseStaticFiles();
-           
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

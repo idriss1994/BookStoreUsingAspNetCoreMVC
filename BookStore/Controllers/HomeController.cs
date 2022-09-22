@@ -16,11 +16,15 @@ namespace BookStore.Controllers
     {
         private readonly IOptionsMonitor<NewBookAlertConfig> _optionsMonitor;
         private readonly IMessageRepository _messageRepository;
+        private readonly NewBookAlertConfig _newBookAlertConfig;
+        private readonly NewBookAlertConfig _thirdPartyBookAlertConfig;
 
         public HomeController(IOptionsMonitor<NewBookAlertConfig> optionsMonitor, IMessageRepository messageRepository)
         {
             _optionsMonitor = optionsMonitor;
             _messageRepository = messageRepository;
+            _newBookAlertConfig = _optionsMonitor.Get("NewBookAlert");
+            _thirdPartyBookAlertConfig = _optionsMonitor.Get("ThirdPartyBookAlert");
         }
 
         [ViewData]
@@ -35,7 +39,8 @@ namespace BookStore.Controllers
         {
             CustomProperty = "Value from ViewData attribue";
 
-            NewBookAlertConfig newBookAlertConfig = _optionsMonitor.CurrentValue;
+            NewBookAlertConfig newBookAlertConfig = _newBookAlertConfig;
+            NewBookAlertConfig thordPartyBookAlertConfig = _thirdPartyBookAlertConfig;
             var value = _messageRepository.GetName();
             return View();
         }
