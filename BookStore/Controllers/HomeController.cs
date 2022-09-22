@@ -7,17 +7,20 @@ using System.Dynamic;
 using Microsoft.Extensions.Configuration;
 using BookStore.Models;
 using Microsoft.Extensions.Options;
+using BookStore.Repository;
 
 namespace BookStore.Controllers
 {
     [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
-        private readonly IOptionsSnapshot<NewBookAlertConfig> _options;
+        private readonly IOptionsMonitor<NewBookAlertConfig> _optionsMonitor;
+        private readonly IMessageRepository _messageRepository;
 
-        public HomeController(IOptionsSnapshot<NewBookAlertConfig> options)
+        public HomeController(IOptionsMonitor<NewBookAlertConfig> optionsMonitor, IMessageRepository messageRepository)
         {
-            _options = options;
+            _optionsMonitor = optionsMonitor;
+            _messageRepository = messageRepository;
         }
 
         [ViewData]
@@ -32,8 +35,8 @@ namespace BookStore.Controllers
         {
             CustomProperty = "Value from ViewData attribue";
 
-            NewBookAlertConfig newBookAlertConfig = _options.Value;
-
+            NewBookAlertConfig newBookAlertConfig = _optionsMonitor.CurrentValue;
+            var value = _messageRepository.GetName();
             return View();
         }
 
