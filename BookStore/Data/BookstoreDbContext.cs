@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Data
 {
-    public class BookstoreDbContext : IdentityDbContext
+    public class BookstoreDbContext : IdentityDbContext<ApplicationUser>
     {
         public BookstoreDbContext(DbContextOptions<BookstoreDbContext> options) :
             base(options)
