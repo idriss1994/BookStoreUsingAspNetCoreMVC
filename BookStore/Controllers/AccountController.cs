@@ -26,10 +26,10 @@ namespace BookStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await _accountRepository.CreateUserAcount(userModel);
+                IdentityResult result = await _accountRepository.CreateUserAccount(userModel);
                 if (!result.Succeeded)
                 {
-                    foreach (var error in result.Errors)
+                    foreach (IdentityError error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }

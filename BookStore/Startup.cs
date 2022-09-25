@@ -46,8 +46,14 @@ namespace BookStore
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddSingleton<IMessageRepository, MessageRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookstoreDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(identityOptions =>
+            {
+                identityOptions.Password.RequireNonAlphanumeric = false;
+                identityOptions.Password.RequiredLength = 5;
+                identityOptions.Password.RequireDigit = false;
+                identityOptions.Password.RequireUppercase = false;
+                identityOptions.Password.RequireLowercase = false;
+            }).AddEntityFrameworkStores<BookstoreDbContext>();
 
             services.Configure<NewBookAlertConfig>("NewBookAlert", Configuration.GetSection("NewBookAlert"));
             services.Configure<NewBookAlertConfig>("ThirdPartyBookAlert", Configuration.GetSection("ThirdPartyBookAlert"));

@@ -13,16 +13,31 @@ namespace BookStore.Repository
         {
             _userManager = userManager;
         }
-        public async Task<IdentityResult> CreateUserAcount(SignUpUserModel signUpUserModel)
+        //public async Task<IdentityResult> CreateUserAccount(SignUpUserModel signUpUserModel)
+        //{
+        //    return await _userManager.CreateAsync(new ApplicationUser
+        //    {
+        //        FirstName = signUpUserModel.FirstName,
+        //        LastName = signUpUserModel.LastName,
+        //        DateOfBirth = signUpUserModel.DateOfBirth,
+        //        Email = signUpUserModel.Email,
+        //        UserName = signUpUserModel.Email,
+        //    }, signUpUserModel.Password);
+        //}
+
+        public async Task<IdentityResult> CreateUserAccount(SignUpUserModel signUpUserModel)
         {
-            return await _userManager.CreateAsync(new ApplicationUser
+            var user = new ApplicationUser
             {
                 FirstName = signUpUserModel.FirstName,
                 LastName = signUpUserModel.LastName,
                 DateOfBirth = signUpUserModel.DateOfBirth,
                 Email = signUpUserModel.Email,
                 UserName = signUpUserModel.Email,
-            }, signUpUserModel.Password);
+            };
+            IdentityResult result = await _userManager.CreateAsync(user, signUpUserModel.Password);
+
+            return result;
         }
 
     }
