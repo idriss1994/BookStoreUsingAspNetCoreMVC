@@ -26,7 +26,7 @@ namespace BookStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await _accountRepository.CreateUserAccount(userModel);
+                IdentityResult result = await _accountRepository.CreateUserAsync(userModel);
                 if (!result.Succeeded)
                 {
                     foreach (IdentityError error in result.Errors)
@@ -35,6 +35,28 @@ namespace BookStore.Controllers
                     }
                     return View(userModel);
                 }
+            }
+            return View();
+        }
+
+        [Route("login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [Route("login"), HttpPost]
+        public async Task<IActionResult> Login(SignInModel signInModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountRepository.PasswordSignInAsync(signInModel);
+                if(result.Succeeded)
+                {
+                   return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError(string.Empty, "Invalid credentials");
+                return View(signInModel);
             }
             return View();
         }

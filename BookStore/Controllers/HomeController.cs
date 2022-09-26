@@ -11,7 +11,7 @@ using BookStore.Repository;
 
 namespace BookStore.Controllers
 {
-    [Route("[controller]/[action]")]
+ //   [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly IOptionsMonitor<NewBookAlertConfig> _optionsMonitor;
@@ -34,7 +34,7 @@ namespace BookStore.Controllers
         public string Title { get; set; } = "Home from HomeController";
 
         // ~ : to override the controller route lavel
-        [Route("~/", Name = "Default route")]
+        //[Route("/", Name = "Default route")]
         public IActionResult Index()
         {
             CustomProperty = "Value from ViewData attribue";
