@@ -60,5 +60,11 @@ namespace BookStore.Controllers
             }
             return View();
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _accountRepository.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
