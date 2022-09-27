@@ -1,5 +1,6 @@
 ﻿using BookStore.Models;
 using BookStore.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,7 @@ namespace BookStore.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> AddNewBook(int id = 0, bool isSuccess = false)
         {
             //var model = new BookModel
@@ -56,6 +58,7 @@ namespace BookStore.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddNewBook(BookModel model)
         {
             if (ModelState.IsValid)
