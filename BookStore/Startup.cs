@@ -55,6 +55,10 @@ namespace BookStore
                 identityOptions.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<BookstoreDbContext>();
 
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = Configuration.GetSection("Application").GetValue<string>("LoginPath");
+            });
             services.Configure<NewBookAlertConfig>("NewBookAlert", Configuration.GetSection("NewBookAlert"));
             services.Configure<NewBookAlertConfig>("ThirdPartyBookAlert", Configuration.GetSection("ThirdPartyBookAlert"));
         }
