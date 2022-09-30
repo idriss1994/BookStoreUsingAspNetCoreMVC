@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using BookStore.Repository;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Data;
+using BookStore.Services;
 
 namespace BookStore.Controllers
 {
@@ -19,16 +20,19 @@ namespace BookStore.Controllers
         private readonly IOptionsMonitor<NewBookAlertConfig> _optionsMonitor;
         private readonly IMessageRepository _messageRepository;
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory;
+        private readonly IUserService _userService;
         private readonly NewBookAlertConfig _newBookAlertConfig;
         private readonly NewBookAlertConfig _thirdPartyBookAlertConfig;
 
         public HomeController(IOptionsMonitor<NewBookAlertConfig> optionsMonitor,
             IMessageRepository messageRepository,
-            IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory)
+            IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
+            IUserService userService)
         {
             _optionsMonitor = optionsMonitor;
             _messageRepository = messageRepository;
             this.userClaimsPrincipalFactory = userClaimsPrincipalFactory;
+            _userService = userService;
             _newBookAlertConfig = _optionsMonitor.Get("NewBookAlert");
             _thirdPartyBookAlertConfig = _optionsMonitor.Get("ThirdPartyBookAlert");
         }
@@ -44,6 +48,10 @@ namespace BookStore.Controllers
         public IActionResult Index()
         {
             CustomProperty = "Value from ViewData attribue";
+
+            string loggedInUserId = _userService.GetLoggedInUserId();
+            bool isAuthenticated = _userService.IsAuthenticated();
+
 
             NewBookAlertConfig newBookAlertConfig = _newBookAlertConfig;
             NewBookAlertConfig thordPartyBookAlertConfig = _thirdPartyBookAlertConfig;
