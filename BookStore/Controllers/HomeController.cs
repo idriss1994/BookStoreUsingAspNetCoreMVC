@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using BookStore.Models;
 using Microsoft.Extensions.Options;
 using BookStore.Repository;
+using Microsoft.AspNetCore.Identity;
+using BookStore.Data;
 
 namespace BookStore.Controllers
 {
@@ -16,13 +18,17 @@ namespace BookStore.Controllers
     {
         private readonly IOptionsMonitor<NewBookAlertConfig> _optionsMonitor;
         private readonly IMessageRepository _messageRepository;
+        private readonly IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory;
         private readonly NewBookAlertConfig _newBookAlertConfig;
         private readonly NewBookAlertConfig _thirdPartyBookAlertConfig;
 
-        public HomeController(IOptionsMonitor<NewBookAlertConfig> optionsMonitor, IMessageRepository messageRepository)
+        public HomeController(IOptionsMonitor<NewBookAlertConfig> optionsMonitor,
+            IMessageRepository messageRepository,
+            IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory)
         {
             _optionsMonitor = optionsMonitor;
             _messageRepository = messageRepository;
+            this.userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _newBookAlertConfig = _optionsMonitor.Get("NewBookAlert");
             _thirdPartyBookAlertConfig = _optionsMonitor.Get("ThirdPartyBookAlert");
         }

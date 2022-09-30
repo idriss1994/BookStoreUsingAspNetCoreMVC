@@ -1,4 +1,5 @@
 using BookStore.Data;
+using BookStore.Helpers;
 using BookStore.Models;
 using BookStore.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -54,6 +55,7 @@ namespace BookStore
                 identityOptions.Password.RequireUppercase = false;
                 identityOptions.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<BookstoreDbContext>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
             services.ConfigureApplicationCookie(config =>
             {

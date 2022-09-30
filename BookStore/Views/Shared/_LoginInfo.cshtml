@@ -4,7 +4,7 @@
 {
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-            @this.User.Identity.Name
+            @(this.User.FindFirst("UserFirstName").Value + " " + User.FindFirst("UserLastName").Value)
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a>
