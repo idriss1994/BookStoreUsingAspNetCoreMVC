@@ -58,6 +58,7 @@ namespace BookStore
             }).AddEntityFrameworkStores<BookstoreDbContext>();
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             services.ConfigureApplicationCookie(config =>
             {
@@ -65,6 +66,7 @@ namespace BookStore
             });
             services.Configure<NewBookAlertConfig>("NewBookAlert", Configuration.GetSection("NewBookAlert"));
             services.Configure<NewBookAlertConfig>("ThirdPartyBookAlert", Configuration.GetSection("ThirdPartyBookAlert"));
+            services.Configure<SMTPConfigModel>(Configuration.GetSection("SMTPConfig"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

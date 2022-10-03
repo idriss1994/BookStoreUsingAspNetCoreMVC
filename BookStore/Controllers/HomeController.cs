@@ -21,18 +21,21 @@ namespace BookStore.Controllers
         private readonly IMessageRepository _messageRepository;
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
         private readonly NewBookAlertConfig _newBookAlertConfig;
         private readonly NewBookAlertConfig _thirdPartyBookAlertConfig;
 
         public HomeController(IOptionsMonitor<NewBookAlertConfig> optionsMonitor,
             IMessageRepository messageRepository,
             IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-            IUserService userService)
+            IUserService userService,
+            IEmailService emailService)
         {
             _optionsMonitor = optionsMonitor;
             _messageRepository = messageRepository;
             this.userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _userService = userService;
+            _emailService = emailService;
             _newBookAlertConfig = _optionsMonitor.Get("NewBookAlert");
             _thirdPartyBookAlertConfig = _optionsMonitor.Get("ThirdPartyBookAlert");
         }
@@ -45,8 +48,14 @@ namespace BookStore.Controllers
 
         // ~ : to override the controller route lavel
         //[Route("/", Name = "Default route")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var userEmailOptions = new UserEmailOptions()
+            {
+                ToEmails = new List<string> { "idriss@gmail.com" }
+            };
+            await _emailService.SendTestEmail(userEmailOptions);
+
             CustomProperty = "Value from ViewData attribue";
 
             string loggedInUserId = _userService.GetLoggedInUserId();
