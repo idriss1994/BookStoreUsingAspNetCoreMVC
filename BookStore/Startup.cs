@@ -50,12 +50,18 @@ namespace BookStore
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddIdentity<ApplicationUser, IdentityRole>(identityOptions =>
             {
+                //Configure password
                 identityOptions.Password.RequireNonAlphanumeric = false;
                 identityOptions.Password.RequiredLength = 5;
                 identityOptions.Password.RequireDigit = false;
                 identityOptions.Password.RequireUppercase = false;
                 identityOptions.Password.RequireLowercase = false;
+
+                //Confgure email:
+                identityOptions.SignIn.RequireConfirmedEmail = true;
+
             }).AddEntityFrameworkStores<BookstoreDbContext>();
+
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();

@@ -51,15 +51,22 @@ namespace BookStore.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _accountRepository.PasswordSignInAsync(signInModel);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
-                    if(!string.IsNullOrWhiteSpace(returnUrl))
+                    if (!string.IsNullOrWhiteSpace(returnUrl))
                     {
                         return LocalRedirect(returnUrl);
                     }
-                   return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid credentials");
+                if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError(string.Empty, "Not allowed to login");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid credentials");
+                }
                 return View(signInModel);
             }
             return View();
@@ -92,7 +99,7 @@ namespace BookStore.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-               
+
             }
             return View(model);
         }
