@@ -14,7 +14,7 @@ using BookStore.Services;
 
 namespace BookStore.Controllers
 {
- //   [Route("[controller]/[action]")]
+    //   [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly IOptionsMonitor<NewBookAlertConfig> _optionsMonitor;
@@ -52,7 +52,11 @@ namespace BookStore.Controllers
         {
             var userEmailOptions = new UserEmailOptions()
             {
-                ToEmails = new List<string> { "idriss@gmail.com" }
+                ToEmails = new List<string> { "idriss@gmail.com" },
+                PlaceHolders = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("{{UserName}}", "Idriss")
+                }
             };
             await _emailService.SendTestEmail(userEmailOptions);
 
