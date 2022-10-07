@@ -60,7 +60,9 @@ namespace BookStore
                 //Confgure email:
                 identityOptions.SignIn.RequireConfirmedEmail = true;
 
-            }).AddEntityFrameworkStores<BookstoreDbContext>();
+            })
+            .AddEntityFrameworkStores<BookstoreDbContext>()
+            .AddDefaultTokenProviders();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             services.AddScoped<IUserService, UserService>();
@@ -88,7 +90,7 @@ namespace BookStore
             app.UseRouting();
 
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -55,6 +55,10 @@ namespace BookStore.Controllers
                 {
                     if (!string.IsNullOrWhiteSpace(returnUrl))
                     {
+                        if (returnUrl.Contains("confirm-email"))
+                        {
+                            returnUrl = "/";
+                        }
                         return LocalRedirect(returnUrl);
                     }
                     return RedirectToAction("Index", "Home");
@@ -102,6 +106,23 @@ namespace BookStore.Controllers
 
             }
             return View(model);
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string uId, string token)
+        {
+            
+            if (!string.IsNullOrWhiteSpace(uId) && !string.IsNullOrWhiteSpace(token))
+            {
+                token = token.Replace(' ', '+');
+                var result = await _accountRepository.ConfirmEmailAsync(uId, token);
+                if (result.Succeeded)
+                {
+                    ViewBag.IsSucceded = true;
+                }
+            }
+
+            return View();
         }
     }
 }

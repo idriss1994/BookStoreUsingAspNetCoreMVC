@@ -6,5 +6,6 @@ namespace BookStore.Services
     public interface IEmailService
     {
         Task SendTestEmail(UserEmailOptions userEmailOption);
+        Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOption);
     }
 }

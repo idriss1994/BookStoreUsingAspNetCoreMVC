@@ -50,15 +50,16 @@ namespace BookStore.Controllers
         //[Route("/", Name = "Default route")]
         public async Task<IActionResult> Index()
         {
-            var userEmailOptions = new UserEmailOptions()
-            {
-                ToEmails = new List<string> { "idriss@gmail.com" },
-                PlaceHolders = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("{{UserName}}", "Idriss")
-                }
-            };
-            await _emailService.SendTestEmail(userEmailOptions);
+            //Uncomment this code to send test email
+            //var userEmailOptions = new UserEmailOptions()
+            //{
+            //    ToEmails = new List<string> { "idriss@gmail.com" },
+            //    PlaceHolders = new List<KeyValuePair<string, string>>
+            //    {
+            //        new KeyValuePair<string, string>("{{UserName}}", "Idriss")
+            //    }
+            //};
+            //await _emailService.SendTestEmail(userEmailOptions);
 
             CustomProperty = "Value from ViewData attribue";
 
