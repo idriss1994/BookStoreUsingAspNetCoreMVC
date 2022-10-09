@@ -1,4 +1,5 @@
-﻿using BookStore.Models;
+﻿using BookStore.Data;
+using BookStore.Models;
 using BookStore.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,8 @@ namespace BookStore.Controllers
                     }
                     return View(userModel);
                 }
+                ModelState.Clear();
+                return RedirectToAction("ConfirmEmail", new { Email = userModel.Email });
             }
             return View();
         }
@@ -109,20 +112,47 @@ namespace BookStore.Controllers
         }
 
         [HttpGet("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(string uId, string token)
+        public async Task<IActionResult> ConfirmEmail(string uId, string token, string email)
         {
-            
+            var model = new EmailConfirmModel
+            {
+                Email = email
+            };
+
             if (!string.IsNullOrWhiteSpace(uId) && !string.IsNullOrWhiteSpace(token))
             {
                 token = token.Replace(' ', '+');
                 var result = await _accountRepository.ConfirmEmailAsync(uId, token);
                 if (result.Succeeded)
                 {
-                    ViewBag.IsSucceded = true;
+                    model.EmailVerified = true;
                 }
             }
 
-            return View();
+            return View(model);
+        }
+
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(EmailConfirmModel model)
+        {
+            ApplicationUser user = await _accountRepository.GetUserByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong");
+                return View(model);
+            }
+            else
+            {
+                if (user.EmailConfirmed)
+                {
+                    model.IsConfirmed = true;
+                    return View(model);
+                }
+                await _accountRepository.GenerateEmailConfirmationTokenAsync(user);
+                model.EmailSent = true;
+                ModelState.Clear();
+            }
+            return View(model); 
         }
     }
 }

@@ -1,23 +1,42 @@
-﻿
+﻿@model EmailConfirmModel
 @{
     ViewData["Title"] = "ConfirmEmail";
 }
 
 <div class="container">
-    <h2>ConfirmEmail</h2>
+
     <div class="row text-center">
-        @if (ViewBag.IsSucceded == true)
-        {
-            <div class="alert alert-success" role="alert">
-                <p>Your email has been verified succefully.</p>
-            </div>
-        }
-        else
-        {
-           <div class="alert alert-danger" role="alert">
-               <p>Something went wrong or your token has been expired.</p>
-           </div>
-        }
+        <div class="col-md-12">
+            @if (Model.EmailVerified == true)
+            {
+                <div class="alert alert-success" role="alert">
+                    <p>Your email has been verified succefully.</p>
+                </div>
+            }
+            else
+            {
+                if (Model.EmailSent)
+                {
+                    <p>Email sent on your registred email id.</p>
+                }
+                else
+                {
+                    <p>We have sent an email on your registred email id, click on the link to verify your email.</p>
+                }
+                <form asp-action="ConfirmEmail">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Email" />
+                    <p>Did not get any email or deleted by mistake?</p>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-info" value="Resend confirmation email" />
+                    </div>
+                </form>
+
+                @* <div class="alert alert-danger" role="alert">
+            <p>Something went wrong or your token has been expired.</p>
+            </div>*@
+            }
+        </div>
     </div>
 </div>
 

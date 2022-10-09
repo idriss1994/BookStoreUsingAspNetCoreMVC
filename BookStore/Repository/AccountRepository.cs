@@ -28,6 +28,11 @@ namespace BookStore.Repository
             _emailService = emailService;
             _configuration = configuration;
         }
+
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
+        }
         public async Task<IdentityResult> CreateUserAsync(SignUpUserModel signUpUserModel)
         {
             var user = new ApplicationUser
@@ -41,16 +46,19 @@ namespace BookStore.Repository
             var result = await _userManager.CreateAsync(user, signUpUserModel.Password);
             if (result.Succeeded)
             {
-                string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                if (!string.IsNullOrWhiteSpace(token))
-                {
-                    await SendConfirmationEmail(user, token);
-                }
+                await GenerateEmailConfirmationTokenAsync(user);
             }
 
             return result;
         }
-
+        public async Task GenerateEmailConfirmationTokenAsync(ApplicationUser user)
+        {
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                await SendConfirmationEmail(user, token);
+            }
+        }
         public async Task<SignInResult> PasswordSignInAsync(SignInModel signInModel)
         {
             return await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, signInModel.RememberMe, false);
