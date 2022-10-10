@@ -92,7 +92,17 @@ namespace BookStore.Repository
             {
                 return await _userManager.ConfirmEmailAsync(user, token);
             }
-            return IdentityResult.Failed(new IdentityError { Description = "User not found" });
+            return IdentityResult.Failed(new IdentityError { Description = "Something went wrong" });
+        }
+        public async Task<IdentityResult> ResetPasswordAsync(ResetPasswordModel resetPasswordModel)
+        {
+            var user = await _userManager.FindByIdAsync(resetPasswordModel.UserId);
+            
+            if (user != null)
+            {
+                return await _userManager.ResetPasswordAsync(user, resetPasswordModel.Token, resetPasswordModel.NewPassword);
+            }
+            return IdentityResult.Failed(new IdentityError { Description = "Something went wrong" });
         }
         async Task SendConfirmationEmail(ApplicationUser user, string token)
         {

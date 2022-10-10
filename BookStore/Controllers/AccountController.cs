@@ -177,5 +177,35 @@ namespace BookStore.Controllers
             }
             return View(model);
         }
+
+        [AllowAnonymous, HttpGet("reset-password")]
+        public IActionResult ResetPassword(string uId, string token)
+        {
+            return View(new ResetPasswordModel
+            {
+                UserId = uId,
+                Token = token
+            });
+        }
+        [AllowAnonymous, HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Token = model.Token?.Replace(' ', '+');
+                var result = await _accountRepository.ResetPasswordAsync(model);
+                if (result.Succeeded)
+                {
+                    model.IsSuccess = true;
+                    ModelState.Clear();
+                }
+
+                foreach (IdentityError error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
+        }
     }
 }
