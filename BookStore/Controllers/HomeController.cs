@@ -11,6 +11,7 @@ using BookStore.Repository;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Data;
 using BookStore.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.Controllers
 {
@@ -22,6 +23,7 @@ namespace BookStore.Controllers
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory;
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly NewBookAlertConfig _newBookAlertConfig;
         private readonly NewBookAlertConfig _thirdPartyBookAlertConfig;
 
@@ -29,13 +31,15 @@ namespace BookStore.Controllers
             IMessageRepository messageRepository,
             IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
             IUserService userService,
-            IEmailService emailService)
+            IEmailService emailService,
+            RoleManager<IdentityRole> roleManager)
         {
             _optionsMonitor = optionsMonitor;
             _messageRepository = messageRepository;
             this.userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _userService = userService;
             _emailService = emailService;
+            _roleManager = roleManager;
             _newBookAlertConfig = _optionsMonitor.Get("NewBookAlert");
             _thirdPartyBookAlertConfig = _optionsMonitor.Get("ThirdPartyBookAlert");
         }
@@ -61,6 +65,8 @@ namespace BookStore.Controllers
             //};
             //await _emailService.SendTestEmail(userEmailOptions);
 
+             //var result = await _roleManager.CreateAsync(new IdentityRole { Name = "User" });
+
             CustomProperty = "Value from ViewData attribue";
 
             string loggedInUserId = _userService.GetLoggedInUserId();
@@ -79,6 +85,7 @@ namespace BookStore.Controllers
         }
         //[Route("contact-us/{id}")]
         [HttpGet("~/contact-us")]
+        [Authorize(Roles = "User")]
         public IActionResult ContactUs()
         {
             return View();
