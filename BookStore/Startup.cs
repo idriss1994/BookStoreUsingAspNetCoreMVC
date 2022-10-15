@@ -60,6 +60,10 @@ namespace BookStore
                 //Confgure email:
                 identityOptions.SignIn.RequireConfirmedEmail = true;
 
+                //Configure user lockout:
+                identityOptions.Lockout.MaxFailedAccessAttempts = 3;
+                identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+
             })
             .AddEntityFrameworkStores<BookstoreDbContext>()
             .AddDefaultTokenProviders();
