@@ -6,6 +6,8 @@
     <title>@ViewData["Title"]</title>
     <environment include="Development">
         <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/css/site.css" rel="stylesheet" />
+        <link href="~/css/newstyle.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         @*<link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />*@
@@ -17,17 +19,18 @@
               asp-fallback-test-value="absolute"
               integrity=""
               crossorigin="anonymous">
+        <link href="~/css/site.min.css" rel="stylesheet" />
     </environment>
-    <link href="~/css/site.css" rel="stylesheet" />
+
 </head>
 <body>
     @* Nav bar*@
     <partial name="_Header" />
 
     <main role="main">
-       <div class="container">
+        <div class="container">
             @RenderBody()
-       </div>
+        </div>
     </main>
 
     <partial name="_Footer" />
